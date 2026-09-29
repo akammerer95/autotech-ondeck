@@ -27,11 +27,6 @@
           <a href="#contact">Contact</a>
         </nav>
 
-        <form class="login-bar" method="POST" action="{{ url_for('login') }}">
-          <input type="text" name="username" placeholder="Username" aria-label="Username" />
-          <input type="password" name="password" placeholder="Password" aria-label="Password" />
-          <button type="submit">Login</button>
-        </form>
       </div>
     </header>
 
@@ -57,7 +52,7 @@
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#services">View Services</a>
-              <a class="btn btn-secondary" href="https://facebook.com/autotechondeck" target="_blank" rel="noreferrer">Book on Facebook</a>
+              <a class="btn btn-secondary" href="https://facebook.com/autotechondeck" target="_blank" rel="noreferrer">Send us a Facebook message</a>
             </div>
             <div class="hero-stats">
               <div>
@@ -80,7 +75,7 @@
               <li>Friendly, transparent care</li>
             </ul>
             <a href="tel:+15559870147" class="phone-link">(555) 987-0147</a>
-            <a href="https://facebook.com/autotechondeck" class="social-link" target="_blank" rel="noreferrer">Facebook Booking</a>
+            <a href="https://facebook.com/autotechondeck" class="social-link" target="_blank" rel="noreferrer">Send us a Facebook message</a>
           </div>
         </div>
       </section>
@@ -166,6 +161,14 @@
           <a href="tel:+15559870147">(555) 987-0147</a>
           <a href="https://facebook.com/autotechondeck" target="_blank" rel="noreferrer">Facebook</a>
         </div>
+        <details class="admin-login">
+          <summary>Admin login</summary>
+          <form class="login-bar admin-login-form" method="POST" action="{{ url_for('login') }}">
+            <input type="text" name="username" placeholder="Username" aria-label="Username" autocomplete="username" />
+            <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" />
+            <button type="submit">Login</button>
+          </form>
+        </details>
       </div>
     </footer>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>

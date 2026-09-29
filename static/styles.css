@@ -127,6 +127,35 @@ img {
   color: rgba(223, 234, 243, 0.5);
 }
 
+.admin-login {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.admin-login summary {
+  width: fit-content;
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.admin-login summary:hover {
+  color: var(--slate);
+}
+
+.admin-login-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  align-items: center;
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+.admin-login-form input {
+  width: 100%;
+}
+
 .login-bar button,
 .btn {
   border: 0;
@@ -576,6 +605,10 @@ textarea {
 
   .login-bar input {
     width: 100%;
+  }
+
+  .admin-login-form {
+    grid-template-columns: 1fr;
   }
 
   .brand-block {

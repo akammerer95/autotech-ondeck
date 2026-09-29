@@ -33,6 +33,17 @@ def test_homepage_has_services_instead_of_pricing(client):
     assert "Pricing" not in html
 
 
+def test_homepage_has_collapsed_footer_login_and_facebook_message_cta(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert '<details class="admin-login">' in html
+    assert "Admin login" in html
+    assert "Send us a Facebook message" in html
+    assert "Book on Facebook" not in html
+    assert "Facebook Booking" not in html
+
+
 def test_admin_login_and_entry_creation(client):
     response = client.post(
         "/login",
