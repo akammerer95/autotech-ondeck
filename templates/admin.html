@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Dashboard | Auto Tech on Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="admin-body">
+    <header class="topbar admin-topbar">
+      <div class="container nav-wrap">
+        <div class="brand-block">
+          <img src="{{ url_for('static', filename='logo/AUTOTEC LOGO.jpg') }}" alt="Auto Tech on Deck logo" class="site-logo" />
+          <div>
+            <p class="brand-name">Auto Tech on Deck</p>
+            <p class="brand-tag">Accounting Dashboard</p>
+          </div>
+        </div>
+
+        <div class="admin-actions">
+          <span>Welcome, {{ session['admin_user'] }}</span>
+          <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap container admin-flash">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container warning-strip">
+      <h3>Account records expire after 1 year</h3>
+      <p>Entries nearing automatic deletion are highlighted here and removed one month after the retention window starts.</p>
+      {% if warning_entries %}
+        <ul>
+          {% for warning in warning_entries %}
+            <li>{{ warning.customer_name }} — {{ warning.service_name }} — expires in less than 1 month</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <main class="admin-main">
+      <div class="container admin-grid">
+        <section class="admin-panel">
+          <h2>Add New Account Entry</h2>
+          <form method="POST" action="{{ url_for('add_entry') }}" class="admin-form">
+            <label>
+              Customer name
+              <input type="text" name="customer_name" placeholder="Customer name" />
+            </label>
+            <label>
+              Service name
+              <input type="text" name="service_name" placeholder="Example: Brake Repair" />
+            </label>
+            <label>
+              Amount
+              <input type="text" name="amount" placeholder="$250.00" />
+            </label>
+            <label>
+              Service date
+              <input type="date" name="service_date" />
+            </label>
+            <label>
+              Month
+              <input type="month" name="month" placeholder="2026-09" />
+            </label>
+            <label>
+              Notes
+              <textarea name="notes" rows="4" placeholder="Add notes..."></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary">Add Entry</button>
+          </form>
+        </section>
+
+        <section class="admin-panel admin-report-panel">
+          <h2>Monthly Accounting</h2>
+          {% for month in grouped_entries.keys() %}
+            <div class="month-group">
+              <h3>{{ month }}</h3>
+              {% for entry in grouped_entries[month] %}
+                <form method="POST" action="{{ url_for('update_entry') }}" class="entry-form">
+                  <input type="hidden" name="entry_id" value="{{ entry.id }}" />
+                  <div class="entry-row">
+                    <label>
+                      Customer
+                      <input type="text" name="customer_name" value="{{ entry.customer_name }}" />
+                    </label>
+                    <label>
+                      Service
+                      <input type="text" name="service_name" value="{{ entry.service_name }}" />
+                    </label>
+                    <label>
+                      Amount
+                      <input type="text" name="amount" value="{{ entry.amount }}" />
+                    </label>
+                    <label>
+                      Date
+                      <input type="date" name="service_date" value="{{ entry.service_date }}" />
+                    </label>
+                    <label>
+                      Month
+                      <input type="month" name="month" value="{{ entry.month }}" />
+                    </label>
+                  </div>
+                  <label>
+                    Notes
+                    <textarea name="notes" rows="2">{{ entry.notes }}</textarea>
+                  </label>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-secondary">Edit</button>
+                    <button type="submit" class="btn btn-danger" formaction="{{ url_for('delete_entry', entry_id=entry.id) }}">Delete</button>
+                  </div>
+                </form>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
